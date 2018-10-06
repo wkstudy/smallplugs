@@ -2,6 +2,7 @@
 * 水平导航
 * 垂直导航
 
+[demo](https://wkstudy.github.io/smallplugs/nav/index.html)
 ---
 ## 水平导航
 * 下方的表示状态的是li的::after伪元素
