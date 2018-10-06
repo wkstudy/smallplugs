@@ -1,0 +1,111 @@
+html,
+body {
+  height: 100%;
+}
+/*水平导航*/
+.horizonal {
+  background-color: #393d49;
+  float: left;
+  width: 100%;
+}
+ul.horizonal::after {
+  clear: both;
+}
+.horizonal>li {
+  float: left;
+  margin-right: 2.0em;
+  cursor: pointer;
+  position: relative;
+}
+.horizonal>li a {
+  color: white;
+  font-size: 1.6em;
+  line-height: 3.0em
+}
+.horizonal li span {
+  color: white;
+}
+.horizonal>li::after {
+  content: '';
+  display: block;
+  border-bottom: .4em solid #393d49;
+}
+.horizonal>li:hover::after {
+  border-color: #5fb878;
+  transition: all .4s;
+}
+li.active::after {
+  border-color: #5fb878;
+}
+.horizonal>li:hover .son {
+  display: block;
+}
+.son {
+  border: .1em solid #d2d2d2;
+  position: absolute;
+  font-size: 1.2em;
+  margin-top: .4em;
+  display: none;
+}
+.son li {
+  padding: .6em .6em;
+}
+.sec li {
+  padding: .6em 1.0em
+}
+.son li:hover {
+  background-color: #f2f2f2
+}
+/*垂直导航*/
+.vertical {
+  background-color: #393d49;
+  color: white;
+  width: 12em;
+  height: 60%;
+}
+.vertical li {
+  cursor: pointer;
+  line-height: 1.8em;
+  padding: 1.0em 1.2em;
+  font-size: 1.4em;
+  position: relative;
+}
+.vertical>li:hover {
+  background-color: #4e5465;
+}
+.vertical>li::before {
+  content: '';
+  background-color: #393d49;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: .5em;
+  height: 3.8em;
+}
+.vertical>li:hover::before {
+  background-color: #5fb878;
+  transition: all .3s;
+}
+.vertical li .iconfont {
+  position: absolute;
+  right: 1.0em;
+}
+.vertical ul {
+  background-color: #212d3c;
+  display: none;
+  margin-top: 1.0em;
+  margin-left: -1.2em;
+  margin-right: -1.2em;
+  margin-bottom: -1em;
+}
+.vertical ul li {
+  font-size: .8em;
+  line-height: 1.2em;
+}
+.vertical ul li:hover {
+  color: #c5c8cc
+}
+.active-li {
+  background-color: #5fb878;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>nav</title>
+  <link rel="stylesheet" href="./iconfont.css">
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<script>
+  window.onload = function() {
+    //水平导航改变上下箭头
+    document.querySelector('.horizonal').addEventListener('mouseenter', function(e) {
+      if (e.target.nodeName.toLowerCase() == 'li') {
+        var span = e.target.querySelector('.iconfont')
+        if (span) {
+          span.innerHTML = '&#xe614;'
+        }
+      }
+    }, true)
+     document.querySelector('.horizonal').addEventListener('mouseleave', function(e) {
+      if (e.target.nodeName.toLowerCase() == 'li') {
+        var span = e.target.querySelector('.iconfont')
+        if (span) {
+          span.innerHTML = '&#xe629;'
+        }
+      }
+    }, true)
+     //垂直导航
+    document.querySelector('.vertical').addEventListener('click', function(event) {
+      var e = event.target;
+      if (e.nodeName.toLowerCase() == 'li'){
+        var iconfont = e.querySelector('.iconfont');
+        if (iconfont) {
+          if (iconfont.innerHTML == '') {
+            iconfont.innerHTML = '&#xe614;'
+            iconfont.nextElementSibling.style.display = 'block';
+          }else {
+            iconfont.innerHTML = '&#xe629;'
+            iconfont.nextElementSibling.style.display = 'none';
+          }
+        }  
+      }else if (e.nodeName.toLowerCase() == 'span') {
+        //由于每次点击到span,都没冒泡到li上，只好再进行一次判断
+        var pnode= e.parentNode,
+            iconfont = pnode.querySelector('.iconfont');
+        if (iconfont) {
+          if (iconfont.innerHTML == '') {
+            iconfont.innerHTML = '&#xe614;'
+            iconfont.nextElementSibling.style.display = 'block';
+          }else {
+            iconfont.innerHTML = '&#xe629;'
+            iconfont.nextElementSibling.style.display = 'none';
+          }
+        }  
+      }
+    }, false)
+    document.querySelector('.vertical').addEventListener('click', function(event) {
+      //二级菜单点击事件
+      var e = event.target;
+      if (e.parentNode.className == 'v-son') {
+        if (e.nodeType == '1') {
+          //是Element元素而不是Text或者其他元素
+          var activeli = this.querySelector('.active-li');
+          if (activeli) {
+            //整个页面要么有一个active-li，要么没有
+            activeli.classList.remove('active-li');
+          }
+        }  
+        e.classList.add('active-li');  
+      }
+    }, false)
+  }
+</script>
+<body>
+  <ul class="horizonal">
+    <li class="active"><a href="">最新活动</a></li>
+    <li>
+      <div>
+        <a href="">产品</a>
+        <span class="iconfont">&#xe629;</span>
+      </div>
+      <ul class="son">
+        <li>产品1</li>
+        <li>产品2</li>
+        <li>产品3</li>
+      </ul>
+    </li>
+    <li><a href="">大数据</a></li>
+    <li>
+      <a href="">解决方案</a>
+      <span class="iconfont">&#xe629;</span>
+      <ul class="son sec">
+        <li>移动模块</li>
+        <li>后台模板</li>
+        <li>选中项</li>
+        <li>电商平台</li>
+      </ul>
+    </li>
+    <li><a href="">社区</a></li>
+  </ul>
+  <span style="display: block;padding-top: 200px;">------</span>
+  <ul class="vertical">
+    <li>
+      <span>默认展开</span>
+      <span class="iconfont">&#xe629;</span>
+      <ul class="v-son">
+        <li>选项一</li>
+        <li>选项二</li>
+        <li>选项三</li>
+        <li>选项四</li>
+      </ul>
+    </li>
+    <li>
+      <span>解决方案</span>
+      <span class="iconfont">&#xe629;</span>
+      <ul class="v-son">
+        <li>移动模块</li>
+        <li>后台模板</li>
+        <li>电商平台</li>
+      </ul>
+    </li>
+    <li><span>云市场</span></li>
+    <li><span>社区</span></li>
+  </ul>
+</body>
+</html>
