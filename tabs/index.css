@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  font-size: 10px;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+ul {
+  list-style-type: none;
+  overflow: hidden;
+  border-bottom: .1rem solid #e6e6e6;
+}
+ul li {
+  float: left;
+  width: 9.0rem;
+  font-size: 1.4rem;
+  line-height: 4.0rem;
+  text-align: center;
+  cursor: pointer;
+}
+.active {
+  color: #5fb878;
+}
+ul li::after {
+  content: '';
+  display: block;
+  height: 0;
+  border-bottom: .2rem solid white;
+}
+ul li.active::after {
+  border-bottom: .2rem solid #5fb878;
+  transition: all .5s
+}
+.content {
+  padding: 1.0rem
+}
+/*初始情况下所有content都不显示*/
+.content section {
+  display: none;
+}
+/*默认让第一个content显示*/
+.content section:nth-of-type(1){
+  display: block;
+}

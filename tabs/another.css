@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  font-size: 10px;
+}
+ul {
+  list-style-type: none;
+  border-bottom: .1rem solid #e6e6e6;
+}
+ul li {
+  display: inline-block;
+  width: 9.0rem;
+  font-size: 1.4rem;
+  line-height: 4.0rem;
+  text-align: center;
+  cursor: pointer;
+  border: .1rem solid white;
+  position: relative;
+  top: .1rem;
+  border-bottom: .1rem solid #e6e6e6;
+}
+.active {
+  border-top: .1rem solid #e6e6e6;
+  border-left: .1rem solid #e6e6e6;
+  border-right: .1em solid #e6e6e6;
+  border-bottom: .1rem solid white;
+}
+.content {
+  padding: 1.0rem
+}
+/*初始情况下所有content都不显示*/
+.content section {
+  display: none;
+}
+/*默认让第一个content显示*/
+.content section:nth-of-type(1){
+  display: block;
+}
