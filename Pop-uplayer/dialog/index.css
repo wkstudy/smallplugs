@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  font-size: 12px;
+}
+.cnt {
+  width: 700px;
+  height: 600px;
+  border: 1px solid red;
+  margin: 0 auto;
+}
+#dialog {
+  display: none;
+  z-index: 1;
+  width: 30rem;
+  position: absolute;
+  top: 15%;
+  left: 35%;
+  border: .1rem solid #aaaaaa;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+#dialog header {
+  text-align: center;
+  position: relative;
+  line-height: 2rem;
+  background-color: #cccccc;
+  cursor: move;
+}
+#dialog header span {
+  position: absolute;
+  display: inline-block;
+  width: 2rem;
+  line-height: 2rem;
+  background-color: #e6e6e6;
+  right: 0%;
+  top: 2%;
+  cursor: default;
+}
+#dialog .content {
+  font-size: 1.16rem;
+  text-indent: 2em;
+}

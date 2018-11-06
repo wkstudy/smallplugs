@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0
+}
+html,
+body {
+  font-size: 10px;
+}
+.modal {
+  background-color: rgba(128, 128, 128, .7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: none;
+}
+.modal-content {
+  margin: 10rem auto;
+  background-color: white;
+  width: 50rem;
+  border-radius: 1rem;
+  /*bootstrap中的样式*/
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  border: 1px solid rgba(0,0,0,.2);
+}
+.modal-content header {
+  border-bottom: .1rem solid #808080;
+  position: relative;
+}
+.modal-content header h4 {
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: 3rem;
+}
+.modal-content header button {
+  position: absolute;
+  right: 2%;
+  top: 20%;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  width: 1.6rem;
+  cursor: pointer;
+}
+.modal-content .content {
+  padding: 1.5rem;
+  min-height: 20rem;
+  font-size: 1.4rem;
+}
+.modal-content footer {
+  padding: 1.5rem;
+  border-top: .1rem solid #808080;
+  text-align: center;
+}
+.modal-content footer button {
+  cursor: pointer;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  width: 6rem;
+  border-radius: .4rem;
+  background-color: #fff;
+  border: .1rem solid #ccc;
+}
+.modal-content footer button:first-child {
+  margin-right: 3rem;
+}
