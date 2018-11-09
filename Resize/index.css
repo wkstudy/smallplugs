@@ -1,0 +1,21 @@
+html,
+body {
+  font-size: 62.5%;
+}
+
+.cnt {
+  width: 60%;
+  border: .1rem solid #aaaaaa;
+  margin: 5rem auto;
+  height: 30rem;
+  position: relative;
+}
+
+#target {
+  position: absolute;
+  width: 25%;
+  height: 10rem;
+  border: .1rem solid #aaa;
+  top: 10rem;
+  left: 10rem;
+}
