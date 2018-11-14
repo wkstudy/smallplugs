@@ -112,7 +112,7 @@ document.addEventListener('mousemove', function (e) {
     var  temp = getBoundary(t);
     var  tparent = getBoundary(t.offsetParent);
     var obj = dise(e, temp);
-    ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, t, temp, tparent, 10)
+    ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, t, temp, tparent, 10, 10, 10)
   }
 }, false)
 
@@ -123,10 +123,10 @@ document.addEventListener('mouseup', function() {
   acitvePos.onlft = false
   acitvePos.onrht = false
 }, false)
-function ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent,dis) {
+function ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent,dis, minwdh, minhgt) {
   if (acitvePos.ontop) {
     // 上
-    if (tp + (e.clientY - mousey) > dis) {
+    if (tp + (e.clientY - mousey) > dis && hgt - (e.clientY - mousey) > minhgt) {
       dom.style.top = tp + (e.clientY - mousey) + 'px';
       dom.style.height = hgt - (e.clientY - mousey) + 'px'; 
     }else {
@@ -136,7 +136,7 @@ function ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent,dis
   }
   if (acitvePos.onbtm) {
      // 下
-     if (hgt + e.clientY - mousey < tparent.btm - temp.top - dis) {
+     if (hgt + e.clientY - mousey < tparent.btm - temp.top - dis && hgt + e.clientY - mousey > minhgt) {
       //  (hgt + e.clientY - mousey)指高度， 当高度小于最大高度（tparent.btm - temp.top - dis）
       dom.style.height = hgt + e.clientY - mousey + 'px';
     }else {
@@ -145,7 +145,7 @@ function ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent,dis
   }
   if (acitvePos.onlft) {
     // 左
-    if (lft + (e.clientX - mousex) > dis) {
+    if (lft + (e.clientX - mousex) > dis && wdh - (e.clientX - mousex) > minwdh) {
       dom.style.left = lft + (e.clientX - mousex) + 'px';
       dom.style.width = wdh - (e.clientX - mousex) + 'px';
     }else {
@@ -155,7 +155,7 @@ function ChangeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent,dis
   }
   if (acitvePos.onrht) {
     // 右
-    if (wdh + e.clientX - mousex < tparent.rht - temp.lft - dis) {
+    if (wdh + e.clientX - mousex < tparent.rht - temp.lft - dis && wdh + e.clientX - mousex > minwdh) {
       //  (wdh + e.clientX - mousex)指宽度， 当宽度小于最大宽度（tparent.rht - temp.lft - dis）
       dom.style.width = wdh + e.clientX - mousex + 'px';
     }else {

@@ -37,6 +37,19 @@ if (lft + (e.clientX - mousex) > dis) {}
 ```
 
 
+## 修复bugs
+问题：top边和left边分别向下、右拖拽改变大小时，会把元素拖出父元素之外，此时需要通过设置最小width/height解决，为了保证统一，top/left/bottom/right边都添加最小width/height的判断,修改如下：
+```
+// 上
+if (tp + (e.clientY - mousey) > dis && hgt - (e.clientY - mousey) > minhgt) {}   ----> dom.style.top值 dom.style.height
+// 下
+if (hgt + e.clientY - mousey < tparent.btm - temp.top - dis && hgt + e.clientY - mousey > minhgt) {}    ----> dom.style.height值（最大最小）
+// 左
+if (lft + (e.clientX - mousex) > dis && wdh - (e.clientX - mousex) > minwdh) {}        ----> dom.style.left 值 和dom.style.width值
+ // 右
+if (wdh + e.clientX - mousex < tparent.rht - temp.lft - dis && wdh + e.clientX - mousex > minwdh) {}   -----> dom.style.width值（最大最小）
+```
+
 ## error
 * 函数传参，**基本类型**的都是传递了一个副本，原本把几个全局变量都通过函数传参，发现都不起作用
 * 全局变量获取元素到上面的距离原来起的变量名是top,结果获取的值不对，改为了tp(原因是全局变量top就相当于window.top，指的是窗口，类似的还有window.self,window.parent，以后千万别起self、top之类的变量名)
