@@ -67,6 +67,7 @@ function mouseStyle (e, obj, dis, dom) {
     dom.style.cursor = 'w-resize'
     return
   }
+  dom.style.cursor = 'auto';
 }
 document.addEventListener('mousemove', function (e) {
   var t = document.getElementById('target');
