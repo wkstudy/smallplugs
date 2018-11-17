@@ -11,33 +11,33 @@
     mousemove
     mouseup
 */
-// 移动部分
-var disx = 0,
-    disy = 0, // 移动时鼠标到元素的距离 
-    mflag = false; // 移动flag
-// 改变鼠标样式部分
-var positionTop = 0,
-    positionBtm = 0,
-    positionLft = 0,
-    positionRht = 0;
-// 改变大小时
-var cflag = false,
-    disTop = 0,
-    disBtm = 0,
-    disLft = 0,
-    disRht = 0; // 鼠标到各条边的距离
-    dx = 0,
-    dy = 0,
-    disWidth = 0,
-    disHeight = 0; // mousedown时dialog的位置
-//  弹出框活动的范围
-var cnt = document.getElementsByClassName('cnt')[0];
-var range = {
-      top: cnt.getBoundingClientRect().top,
-      right: cnt.getBoundingClientRect().right,
-      bottom: cnt.getBoundingClientRect().bottom,
-      left: cnt.getBoundingClientRect().left
-    }
+// 移动
+var mflag = false;
+var movemousex = 0;
+var movemousey = 0;
+var movetp = 0;
+var movelft = 0;
+var movewdh = 0;
+var movehgt = 0;
+var moveparent = getBoundary(document.getElementsByClassName('cnt')[0]); // 因为父容器元素大小一直不变，所以没必要在事件中重复获取
+
+// 改变大小
+var flag = false;
+var mousex = 0; // mousedown 时的鼠标位置
+var mousey = 0;
+var tp = 0;   // mousedown 时元素的信息
+var lft = 0;
+var wdh = 0;
+var hgt = 0;
+var tparent = getBoundary(document.getElementsByClassName('cnt')[0]); // 因为父容器元素大小一直不变，所以没必要在事件中重复获取
+var acitvePos = {   // mousedown 时记录鼠标的位置，供 mousemove 使用
+  ontop: false,
+  onlft: false,
+  onrht: false,
+  onbtm: false
+}
+
+
 document.getElementById('pop').addEventListener('click', show, false)
 document.getElementById('close').addEventListener('click', hidden, false)
 
@@ -45,33 +45,70 @@ document.getElementById('close').addEventListener('click', hidden, false)
 document.getElementsByTagName('header')[0].addEventListener('mousedown', function(e) {
     mflag = true;
     // 计算鼠标到dialog元素的左上角的距离，如果能够同步移动，这个距离是不变的
-    disx = e.clientX - this.parentNode.getBoundingClientRect().left,
-    disy = e.clientY - this.parentNode.getBoundingClientRect().top;
-
+    // disx = e.clientX - this.parentNode.getBoundingClientRect().left,
+    // disy = e.clientY - this.parentNode.getBoundingClientRect().top;
+    var _this = this;
+    var parent = _this.parentNode;
+    movemousex = e.clientX;
+    movemousey = e.clientY;
+    movetp = parent.offsetTop
+    movelft = parent.offsetLeft;
+    movewdh = parent.offsetWidth;
+    movehgt = parent.offsetHeight;
 }, false)
 
 // 如果绑定在 header 上，鼠标移动过快的话会出 header ,同理 mouseup 也是这样
-document.addEventListener('mousemove', function (ev) {
+document.addEventListener('mousemove', function (e) {
   var dom = document.getElementById('dialog');
-  // 鼠标样式
-  getPosition(dom);
-  mouseStyle(ev, dom, 5) 
 
-  // 拖动
   if (mflag) {
-      move(ev, dom);
-  }  
-
-  // 改变大小
-  if (cflag) {
-    var dom = document.getElementById('dialog');
-    getPosition(dom);
-    changeSize(ev, dom, 5)
-  } 
+    move(e, dom, movemousex, movemousey, movetp, movelft, movewdh, movehgt, moveparent, 5)
+  }
 }, false)
 document.addEventListener('mouseup', function (e) {
   mflag = false
-  cflag = false
+}, false)
+
+
+// 鼠标样式
+document.addEventListener('mousemove', function(e) {
+  var dom = document.getElementById('dialog');
+  var obj = getBoundary(dom);
+  var dis  = dise(e, obj);
+  mouseStyle(e, dis, 5, dom)
+}, false)
+
+// 改变大小
+document.getElementById('dialog').addEventListener('mousedown', function (e) {
+  var _this = this;
+  var temp = getBoundary(_this);
+  var obj = dise(e, temp);
+
+  e.preventDefault(); // 阻止默认行为，使得文本不被选中
+
+  mousex = e.clientX;
+  mousey = e.clientY;
+  tp = _this.offsetTop;
+  lft = _this.offsetLeft;
+  wdh = _this.offsetWidth;
+  hgt = _this.offsetHeight;
+
+  MousePos(obj, 10)
+}, false)
+document.addEventListener('mousemove', function (e) {
+  if (flag) {
+    var t = document.getElementById('dialog');
+    var  temp = getBoundary(t);
+    var obj = dise(e, temp);
+    changeSize(mousex, mousey, wdh, hgt, tp, lft, e, t, temp, tparent, 5, 320, 100)
+  }
+}, false)
+document.addEventListener('mouseup', function() {
+  flag = false
+  acitvePos.ontop = false
+  acitvePos.onbtm = false
+  acitvePos.onlft = false
+  acitvePos.onrht = false
 }, false)
 function hidden () {
   document.getElementById('dialog').style.display = 'none';
@@ -79,120 +116,159 @@ function hidden () {
 function show () {
   document.getElementById('dialog').style.display = 'block';
 }
-function move (ev, dom) {
-  if (ev.clientX - disx < range.left || ev.clientX - disx + Number(window.getComputedStyle(dom, null).width.split('px')[0]) > range.right ) {
-    // 左右出界
-    dom.style.top = ev.clientY - disy + 'px';
-  }
-  if (ev.clientY -disy < range.top || ev.clientY - disy + Number(window.getComputedStyle(dom, null).height.split('px')[0]) > range.bottom) {
+
+function move (e, dom, movemousex, movemousey, movetp, movelft, movewdh, movehgt, moveparent, dis) {
+  if (movetp + e.clientY - movemousey < dis || moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis) {
     // 上下出界
-    dom.style.left = ev.clientX - disx + 'px';
+    dom.style.left = movelft + e.clientX - movemousex + 'px';
+  }
+  if (movelft + e.clientX - movemousex < dis || moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // 左右出界
+    dom.style.top = movetp + e.clientY - movemousey + 'px';
+  }
+
+  if (movetp + e.clientY - movemousey >= dis && moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt >= dis && movelft + e.clientX - movemousex >= dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh >= dis) {
+    // 中间部分
+    dom.style.top = movetp + e.clientY - movemousey + 'px';
+    dom.style.left = movelft + e.clientX - movemousex + 'px';
   }
   // 四个角落
-  if (ev.clientX - disx < range.left && ev.clientY - disy < range.top) {
-    // 左上角
-    dom.style.left = range.left + 'px'
-    dom.style.top = range.top + 'px'
+  if (movetp + e.clientY - movemousey < dis && movelft + e.clientX - movemousex < dis) {
+    // left top
+    dom.style.top = dis + 'px';
+    dom.style.left = dis + 'px';
   }
-  if (ev.clientX - disx + dom.getBoundingClientRect().width > range.right && ev.clientY - disy < range.top) {
-    // 右上角
-    dom.style.left = range.right - dom.getBoundingClientRect().width + 'px'
-    dom.style.top = range.top + 'px'
+
+  if (movetp + e.clientY - movemousey < dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // right top
+    dom.style.top = dis + 'px';
+    dom.style.left = moveparent.rht - moveparent.lft - movewdh - dis + 'px';
   }
-  if (ev.clientX - disx < range.left && ev.clientY - disy + dom.getBoundingClientRect().height > range.bottom) {
-    // 左下角
-    dom.style.left = range.left + 'px'
-    dom.style.top = range.bottom - dom.getBoundingClientRect().height + 'px'
+
+  if (moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // right bottom
+    dom.style.top = moveparent.btm - moveparent.top - movehgt - dis + 'px';
+    dom.style.left = moveparent.rht - moveparent.lft - movewdh - dis + 'px';
   }
-  if (ev.clientX - disx + dom.getBoundingClientRect().width > range.right && ev.clientY - disy + dom.getBoundingClientRect().height > range.bottom) {
-    // 右下角
-    dom.style.left = range.right - dom.getBoundingClientRect().width + 'px'
-    dom.style.top = range.bottom  - dom.getBoundingClientRect().height + 'px'
-  }
-  // 中间部分
-  if (ev.clientX - disx >= range.left && ev.clientX - disx + dom.getBoundingClientRect().width <= range.right && 
-    ev.clientY - disy >= range.top && ev.clientY - disy + dom.getBoundingClientRect().height <= range.bottom) {
-    // 在中间
-    dom.style.left = ev.clientX - disx + 'px';
-    dom.style.top = ev.clientY - disy + 'px';
+
+  if (moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis && movelft + e.clientX - movemousex < dis) {
+    // left bottom
+    dom.style.top = moveparent.btm - moveparent.top - movehgt - dis + 'px';
+    dom.style.left = dis + 'px';
   }
 }
-function getPosition (dom) {
-  positionTop = dom.getBoundingClientRect().top,
-  positionBtm = dom.getBoundingClientRect().bottom,
-  positionLft = dom.getBoundingClientRect().left,
-  positionRht = dom.getBoundingClientRect().right;
+
+// 获取目标元素各条边的位置(距离视口)
+function getBoundary (dom) {
+  return {
+    top: dom.getBoundingClientRect().top,
+    btm: dom.getBoundingClientRect().bottom,
+    lft: dom.getBoundingClientRect().left,
+    rht: dom.getBoundingClientRect().right,
+  }
+
 }
-function mouseStyle (e, dom, n) {
-  // 在上下左右 到边界 n px范围内,设置鼠标样式  
-  if (e.clientY - positionTop <= n && e.clientY - positionTop >= 0) {
-    // 上
-    dom.style.cursor = 'n-resize'
+// 获取鼠标到各条边的距离
+function dise (e, obj) {
+  return {
+    disTop: e.clientY - obj.top,
+    disBtm: obj.btm - e.clientY,
+    disLft: e.clientX - obj.lft,
+    disRht: obj.rht - e.clientX
   }
-  if (positionBtm - e.clientY <= n && positionBtm - e.clientY >= 0) {
-    // 下
-    dom.style.cursor = 's-resize'
-  }
-  if (e.clientX - positionLft <= n && e.clientX - positionLft >= 0) {
-    // 左
-    dom.style.cursor = 'e-resize'
-  }
-  if (positionRht - e.clientX <= n && positionRht - e.clientX >= 0) {
-    // 右
-    dom.style.cursor = 'w-resize'
-  }
-  if (e.clientY - positionTop <= n && e.clientY - positionTop >= 0 && e.clientX - positionLft <= n && e.clientX - positionLft >= 0) {
+}
+// 设置鼠标样式
+function mouseStyle (e, obj, dis, dom) {
+  if (obj.disTop >= 0 && obj.disTop < dis && obj.disLft >=0 && obj.disLft < dis) {
     // 左上
     dom.style.cursor = 'nw-resize'
+    return
   }
-  if (e.clientY - positionTop <= n && e.clientY - positionTop >= 0 && positionRht - e.clientX <= n && positionRht - e.clientX >= 0) {
+  if (obj.disTop >= 0 && obj.disTop < dis && obj.disRht >=0 && obj.disRht < dis) {
     // 右上
     dom.style.cursor = 'ne-resize'
+    return
   }
-  if (positionBtm - e.clientY <= n && positionBtm - e.clientY >= 0 && e.clientX - positionLft <= n && e.clientX - positionLft >= 0) {
+  if (obj.disBtm >=0 && obj.disBtm < dis && obj.disLft >= 0 && obj.disLft < dis) {
     // 左下
     dom.style.cursor = 'sw-resize'
+    return
   }
-  if (positionBtm - e.clientY <= n && positionBtm - e.clientY >= 0 && positionRht - e.clientX <= n && positionRht - e.clientX >= 0) {
+  if (obj.disBtm >=0 && obj.disBtm < dis && obj.disRht >= 0 && obj.disRht < dis) {
     // 右下
     dom.style.cursor = 'se-resize'
+    return
   }
-
+  if (obj.disTop >= 0 && obj.disTop < dis) {
+    // 上
+    dom.style.cursor = 'n-resize'
+    return
+  }
+  if (obj.disBtm >= 0 && obj.disBtm < dis) {
+   // 下
+    dom.style.cursor = 's-resize'
+    return
+  }
+  if (obj.disLft >= 0 && obj.disLft < dis) {
+   // 左
+    dom.style.cursor = 'e-resize'
+    return
+  }
+  if (obj.disRht >= 0 && obj.disRht < dis) {
+    // 右
+    dom.style.cursor = 'w-resize'
+    return
+  }
+  dom.style.cursor = 'auto';
 }
 
-// 改变大小 --问题：向右向下 只能往一边拉
+// 判断 mousedown 时，鼠标位于上下左右哪个区域，便于 mousemove 时改变大小
+function MousePos (obj, dis) {
+  if (obj.disTop >= 0 && obj.disTop < dis) {
+    acitvePos.ontop = true;
+    flag = true;
+  }
+  if (obj.disBtm >= 0 && obj.disBtm < dis) {
+    acitvePos.onbtm = true;
+    flag = true;
+  }
+  if (obj.disLft >= 0 && obj.disLft < dis) {
+    acitvePos.onlft = true;
+    flag = true;
+  }
+  if (obj.disRht >= 0 && obj.disRht < dis) {
+    acitvePos.onrht = true;
+    flag = true;
+  }
+}
 
-document.getElementById('dialog').addEventListener('mousedown', function (e) {
-  var _this = this;
-
-  cflag = true;
-  dx = e.clientX;
-  dy = e.clientY;
-  disTop = e.clientY - _this.getBoundingClientRect().top;
-  disBtm = e.clientY - _this.getBoundingClientRect().bottom;
-  disLft = e.clientX - _this.getBoundingClientRect().left;
-  disRht = e.clientX - _this.getBoundingClientRect().right;
-  disWidth = _this.getBoundingClientRect().width;
-  disHeight = _this.getBoundingClientRect().height;
-}, false)
-
-function changeSize (e, dom, n) {
-  if (e.clientY - positionTop <= n && e.clientY - positionTop >= 0) {
+function changeSize(mousex, mousey, wdh, hgt, tp, lft, e, dom, temp, tparent, dis, minwdh, minhgt) {
+  if (acitvePos.ontop) {
     // 上
-    dom.style.top = e.clientY - disTop + 'px';
-    dom.style.height = disHeight + dy - e.clientY + 'px';
+    if (tp + (e.clientY - mousey) > dis && hgt - (e.clientY - mousey) > minhgt) {
+      dom.style.top = tp + (e.clientY - mousey) + 'px';
+      dom.style.height = hgt - (e.clientY - mousey) + 'px'; 
+    }
   }
-  if (positionBtm - e.clientY <= n && positionBtm - e.clientY >= 0) {
-    // 下
-    dom.style.height = disHeight + e.clientY - dy + 'px';
+  if (acitvePos.onbtm) {
+     // 下
+     if (hgt + e.clientY - mousey < tparent.btm - temp.top - dis && hgt + e.clientY - mousey > minhgt) {
+      //  (hgt + e.clientY - mousey)指高度， 当高度小于最大高度（tparent.btm - temp.top - dis）
+      dom.style.height = hgt + e.clientY - mousey + 'px';
+    }
   }
-  if (e.clientX - positionLft <= n && e.clientX - positionLft >= 0) {
+  if (acitvePos.onlft) {
     // 左
-    dom.style.left = e.clientX - disLft + 'px';
-    dom.style.width = dx - e.clientX+ disWidth + 'px'
+    if (lft + (e.clientX - mousex) > dis && wdh - (e.clientX - mousex) > minwdh) {
+      dom.style.left = lft + (e.clientX - mousex) + 'px';
+      dom.style.width = wdh - (e.clientX - mousex) + 'px';
+    }
   }
-  if (positionRht - e.clientX <= n && positionRht - e.clientX >= 0) {
+  if (acitvePos.onrht) {
     // 右
-    dom.style.width = e.clientX - dx + disWidth + 'px'
+    if (wdh + e.clientX - mousex < tparent.rht - temp.lft - dis && wdh + e.clientX - mousex > minwdh) {
+      //  (wdh + e.clientX - mousex)指宽度， 当宽度小于最大宽度（tparent.rht - temp.lft - dis）
+      dom.style.width = wdh + e.clientX - mousex + 'px';
+    }
   }
 }

@@ -10,7 +10,8 @@ body {
   width: 700px;
   height: 600px;
   border: 1px solid red;
-  margin: 0 auto;
+  margin: 20px auto;
+  position: relative;
 }
 #dialog {
   display: none;
@@ -18,7 +19,7 @@ body {
   width: 30rem;
   position: absolute;
   top: 15%;
-  left: 35%;
+  left: 10%;
   border: .1rem solid #aaaaaa;
   border-radius: .5rem;
   padding: .5rem;

@@ -7,6 +7,63 @@
 * dialog.html为模仿jqueryui、layui弹出框
 * 两者主要区别：bootstrap点击除了模态框之外的地方会隐藏模态框，jqueryui中的弹出框可以进行拖动，改变大小，点击其他地方不会对弹出框有影响。
 
+
+## update 11.17
+description：主要针对dialog.html
+
+* 实现了改变大小的功能（参考的Resize里的内容，实现都一样，这里就不描述了）
+* 重写移动方法，旧版比较乱，且父容器定位改变后效果就不对了，因为元素是相对于document定位的
+* 没有把移动和改变大小功能合并，相对独立，便于单独使用
+* 目前移动和改变大小思路都一样，都是mousedown、mousemove、mouseup三个事件，且判断的方法都一样，mousedown记录鼠标位置和元素的位置，mousemove利用鼠标位置的变化来定位元素位置
+* 在判断出界情况下，必须注意if条件必须出现鼠标信息（换句话说判断条件必须涉及e.clientX/Y）,比如在底部出界原来用的`if(moveparent.btm - pos.btm < dis(pos是mousemove时候：var pos = getBoundary(dom))`,虽然逻辑上是对的，但实际上，当元素在下面出界时，鼠标再往上移动，元素也不会跟着网上了
+*  关键判断部分：
+```
+function move (e, dom, movemousex, movemousey, movetp, movelft, movewdh, movehgt, moveparent, dis) {
+  if (movetp + e.clientY - movemousey < dis || moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis) {
+    // 上下出界
+    // movetp + e.clientY - movemousey -->dom.style.top 上边出界
+    // moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt   -----> 父元素下边 - 父元素上边 - 子元素dom.style.top值（相对于父元素） - 子元素高度  ———> 下边出界
+    dom.style.left = movelft + e.clientX - movemousex + 'px';
+  }
+  if (movelft + e.clientX - movemousex < dis || moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // 左右出界
+    dom.style.top = movetp + e.clientY - movemousey + 'px';
+  }
+
+  if (movetp + e.clientY - movemousey >= dis && moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt >= dis && movelft + e.clientX - movemousex >= dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh >= dis) {
+    // 中间部分
+    dom.style.top = movetp + e.clientY - movemousey + 'px';
+    dom.style.left = movelft + e.clientX - movemousex + 'px';
+  }
+  // 四个角落
+  if (movetp + e.clientY - movemousey < dis && movelft + e.clientX - movemousex < dis) {
+    // left top
+    dom.style.top = dis + 'px';
+    dom.style.left = dis + 'px';
+  }
+
+  if (movetp + e.clientY - movemousey < dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // right top
+    dom.style.top = dis + 'px';
+    dom.style.left = moveparent.rht - moveparent.lft - movewdh - dis + 'px';
+  }
+
+  if (moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis && moveparent.rht - moveparent.lft - (movelft + e.clientX - movemousex) - movewdh < dis) {
+    // right bottom
+    dom.style.top = moveparent.btm - moveparent.top - movehgt - dis + 'px';
+    dom.style.left = moveparent.rht - moveparent.lft - movewdh - dis + 'px';
+  }
+
+  if (moveparent.btm - moveparent.top - (movetp + e.clientY - movemousey) - movehgt < dis && movelft + e.clientX - movemousex < dis) {
+    // left bottom
+    dom.style.top = moveparent.btm - moveparent.top - movehgt - dis + 'px';
+    dom.style.left = dis + 'px';
+  }
+}
+```
+
+
+### 旧版
 ## knowledge
 * modal.html
 
