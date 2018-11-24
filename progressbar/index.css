@@ -1,0 +1,25 @@
+html{
+  font-size: 62.5%;
+}
+
+#progress-bar {
+  margin: 20rem auto;
+  width: 40rem;
+  height: 2rem;
+  border: .1rem solid gray;
+  text-align: center;
+  color: black;
+  padding: 0;
+  position: relative;
+}
+#bar {
+  background-color: red;
+  width: 0%;
+  height: 100%;
+  transition: width 1s;
+}
+#txt {
+  position: absolute;
+  line-height: 2rem;
+  top: 0
+}
