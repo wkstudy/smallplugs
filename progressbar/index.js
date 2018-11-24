@@ -3,7 +3,7 @@ function move () {
       txt = document.getElementById('txt'),
       obj = {};
       obj.num = 0;
-  var t = setInterval(change, 100, bar, txt, obj);
+  var t = setInterval(change, 2000, bar, txt, obj);
   function change (bar, txt, obj) {
     if (obj.num <= 100) {
       bar.style.width = obj.num + '%';
