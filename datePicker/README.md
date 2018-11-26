@@ -1,5 +1,7 @@
 ## 日历组件
 
+[demo](https://wkstudy.github.io/smallplugs/datePicker/index.html)
+
 ### 功能： 
 * 改变日期（增大、减少）
 * 显示当前日期（不同颜色标识）
