@@ -1,0 +1,60 @@
+html,
+body {
+  font-size: 62.5%;
+}
+
+
+label {
+  font-size: 1.6rem;
+}
+#date-picker {
+  border: .1rem solid #aaaaaa;
+  background-color: #ffffff;
+  width: 25rem;
+  margin-top: 1rem;
+  margin-left: 3rem;
+  display: none;
+  font-size: 1.6rem;
+}
+#header {
+  background-color: #cccccc;
+  border-radius: .5rem;
+  height: 3.0rem;
+  line-height: 3.0rem;
+  text-align: center;
+  position: relative;
+}
+.left {
+  cursor: pointer;
+  position: absolute;
+  top:35%;
+  left: .1rem;
+}
+
+.right {
+  cursor: pointer;
+  position: absolute;
+  top:35%;
+  right: .1rem;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+  padding: .5rem;
+}
+thead {
+  height: 2.7rem;
+  line-height: 2.7rem;
+  font-weight: bold;
+}
+td.txt {
+  background-color: #dadada;
+  cursor: pointer;
+  border: .1rem solid #d3d3d3;
+  height: 2.7rem;
+  line-height: 2.7rem;
+}
+td.now {
+  background-color: #fbf9ee;
+}
