@@ -1,0 +1,184 @@
+html,
+body {
+  font-size: 62.5%;
+  background-color: #3176a1;
+}
+
+input[type = 'text'] {
+  padding-left: .5rem;
+}
+ul li {
+  list-style-type: none;
+}
+
+.warning {
+  color: red;
+}
+.show {
+  visibility: visible!important;
+  background-color: rgba(0, 0, 0, .5)!important;
+}
+.show-pop {
+  visibility: visible!important;
+}
+.hide-title {
+  display: none!important;
+}
+
+
+.main {
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 60rem;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.8rem;
+  color: white;
+}
+
+#create {
+  margin-bottom: 1rem;
+}
+#create input {
+  font-size: 1.4rem;
+  padding-top: .6rem;
+  padding-bottom: .6rem;
+  box-sizing: content-box;
+}
+#create #text-in {
+  width: 85%;
+}
+#create #add {
+  width: 10%;
+  cursor: pointer;
+}
+
+.lists {
+  padding: 0;
+}
+.lists li {
+  position: relative;
+  height: 3rem;
+  line-height: 3rem;
+  font-size: 1.4rem;
+  margin-bottom: .5rem;
+  background-color: white;
+  text-indent: .6rem;
+  border-radius: .5rem;
+}
+.lists li:hover {
+  background-color: #eeeeee;
+}
+.lists li:hover span:nth-child(2) {
+  right: 8%;
+  opacity: 1;
+}
+.lists li:hover span:nth-child(3) {
+  right: 3%;
+  opacity: 1;
+}
+.lists li span:nth-child(2),
+.lists li span:nth-child(3) {
+  position: absolute;
+  cursor: pointer;
+  right: 0;
+  opacity: 0;
+  transition: all .5s;
+}
+
+
+#pop-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  background-color: raba(0, 0, 0, 0);
+  transition: all .3s;
+}
+
+#del {
+  width: 30rem;
+  background-color: #f0f1f2;
+  height: 9rem;
+  font-size: 1.6rem;
+  text-align: center;
+  position: absolute;
+  top: 28rem;
+  border-radius: .6rem;
+  left: calc(50% - 10rem);
+  opacity: 0;
+  visibility: hidden;
+}
+#del div:first-child {
+  height: 5rem;
+  line-height: 5rem;
+  margin-bottom: .4rem;
+}
+#del input {
+  cursor: pointer;
+  border: none;
+  width: 6rem;
+  height: 2.6rem;
+  padding: .3rem .7rem;
+  border-radius: .3rem;
+}
+#del div #del-sure {
+  margin-right: 4rem;
+  background-color: #00cc66;
+}
+#del div #del-cancel {
+  background-color: #cc6666;
+}
+
+#edit {
+  width: 40rem;
+  height: 23rem;
+  font-size: 1.4rem;
+  padding: .5rem 1rem;
+  background-color: #f0f1f2;
+  position: absolute;
+  top: 28rem;
+  border-radius: .6rem;
+  left: calc(50% - 20rem);
+  opacity: 0;
+  visibility: hidden;
+}
+#edit span {
+  display: block;
+  line-height: 2.5rem;
+}
+#edit input{
+  width: 100%;
+  line-height: 2.5rem;
+  border-width: 0;
+}
+#desc {
+  height: 10rem;
+  width: 100%;
+  padding: .4rem .3rem;
+}
+#edit input[type = 'button'] {
+  cursor: pointer;
+  border: none;
+  width: 8rem;
+  padding: .3rem .7rem;
+  border-radius: .3rem;
+}
+#edit section {
+  margin-bottom: 1rem;
+}
+#edit section:nth-child(4) {
+  text-align: center;
+}
+#edit #edit-sure {
+  margin-right: 4rem;
+  background-color: #00cc66;
+}
+#edit #edit-cancel {
+  background-color: #cc6666;
+}

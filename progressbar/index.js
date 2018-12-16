@@ -12,7 +12,6 @@ function move () {
     }else {
       clearInterval(t);
     }
-   
   }
 }
 

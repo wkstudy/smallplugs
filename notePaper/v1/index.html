@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>note</title>
+  <link rel="stylesheet" href="../normalize.css">
+  <link rel="stylesheet" href="../iconfont.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="main">
+    <h2>备忘录</h2>
+    <div id="create">
+      <label for="text-in"></label>
+      <input type="text" id="text-in" placeholder="请输入内容" autofocus="autofocus">
+      <label for="add"></label>
+      <input type="button" id="add" value="添加">
+    </div>
+    <ul class="lists"></ul>
+    <div class="pages"></div>
+  </div>
+
+
+  <div id="pop-bg">
+  </div>
+  <section id="del">
+      <div>
+        <span>确认删除？</span>
+      </div>
+      <div>
+        <label for="sure"></label>
+        <input type="button" value="确定" id="del-sure">
+        <label for="cancel"></label>
+        <input type="button" value="取消" id="del-cancel">
+      </div>
+  </section>
+  
+  <section id="edit">
+    <section>
+      <span class="title"></span>
+      <label for="change-title"></label>
+      <input type="text" id="change-title">
+    </section>
+    <section>
+      <label for="desc"></label>
+      <textarea name="desc" id="desc" placeholder="请添加描述信息"></textarea>
+    </section>
+    <section>
+      <label for="date"></label>
+      <input type="date" id="date">
+    </section>
+    <section>
+      <label for="edit-sure"></label>
+        <input type="button" value="确定" id="edit-sure">
+        <label for="edit-cancel"></label>
+        <input type="button" value="取消" id="edit-cancel">
+      </div>
+    </section>
+  </section>
+</body>
+<script src="./app.js"></script>
+<script src="../calculate.js"></script>
+</html>
