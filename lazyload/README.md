@@ -4,6 +4,9 @@
 ## time
 19.03.23
 
+## 效果图
+
+[图片地址](https://wkstudy.github.io/smallplugs/lazyload/GIF.gif)
 ##  参考
 
 * 关于懒加载的实践部分主要参考[原生js实现图片懒加载（lazyLoad） - 天之蓝源的文章 - 知乎](https://zhuanlan.zhihu.com/p/55311726)
