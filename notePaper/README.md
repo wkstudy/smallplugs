@@ -53,8 +53,10 @@ import {EventUtil} from './tool.js';
 
 
 ### error
+
 #### v1
 * bind使用过程中，需要传过来鼠标点击时input中的内容，刚开始时的代码为：`createList.bind(null, document.getElementsByClassName('lists')[0], document.getElementById('text-in').value)`,结果在下面一直获取不到值，显示input内容为空，最后发现如果只传过去`document.getElementById('text-in')`,而在函数中获取input内容时就可以了，我得出的 **结论** 是：bind中的参数的内容可能是在编写的时候就确定的，而不是运行的时候（点击）才获取的。为了验证这个结论，将代码改回去，直接在初始的时候就给input赋值，然后点击，发现可以获取到值，而这个值就是初始给的值,之后无论怎么改变，仍然传递的是初始的值，而现在再改成只传递input的写法，只要input内容改变，那么传递的值就改变。
+* 
 #### v2
 * 生成记录的函数 之前的写法：
 ```
