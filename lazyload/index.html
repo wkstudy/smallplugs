@@ -84,6 +84,7 @@ function lazyload (imgs, clientHeight) {
       if(img.getAttribute('data-default')) {
         src = img.getAttribute('data-src');
         img.src = src;
+        img.setAttribute('data-default', 'false')
       }
     }
   });
