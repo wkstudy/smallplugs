@@ -13,3 +13,4 @@
 
 * 本次懒加载实现主要使用getBoundingClientRect() 这个api
 * throttle 函数两个都可以用
+* `data-default` 用来判断是否加载过了
