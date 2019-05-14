@@ -6,7 +6,7 @@ const components = [
 ]
 
 const install = function (Vue, opts = {}) {
-  components.MyPagination(component => {
+  components.map(component => {
     Vue.component(component.name, component)
   })
 }
