@@ -8,7 +8,7 @@
   "main": "dist/my-pagination.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wkstudy/smallplugs.git"
+    "url": "https://github.com/wkstudy/smallplugs/tree/master/vue/wk_pagination"
   },
   "bugs": {
     "url": "https://github.com/wkstudy/smallplugs/issues"

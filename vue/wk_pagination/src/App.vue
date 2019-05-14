@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>This is the first NPM package I released</h1>
+    <h1>Used for debugging this component</h1>
     <h2>a Vue paging component</h2>
     <section>
       <my-pagination
